@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Clock</title>
   <style>
     body {
       font-family: sans-serif;
@@ -39,33 +38,45 @@
       font-size: 1.5em;
       font-weight: bold;
     }
+    .date {
+      font-size: 1em;
+      margin-top: 5px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
+  
   <div class="clock-container">
     <div class="clock" id="London">
       <div class="location">London</div>
       <div class="time">--:--:--</div>
+      <div class="date">--</div>
     </div>
     <div class="clock" id="Dubai">
       <div class="location">Dubai</div>
       <div class="time">--:--:--</div>
+      <div class="date">--</div>
     </div>
     <div class="clock" id="New_York">
       <div class="location">New York</div>
       <div class="time">--:--:--</div>
+      <div class="date">--</div>
     </div>
     <div class="clock" id="Kochi">
       <div class="location">Kochi</div>
       <div class="time">--:--:--</div>
+      <div class="date">--</div>
     </div>
     <div class="clock" id="San_Francisco">
       <div class="location">San Francisco</div>
       <div class="time">--:--:--</div>
+      <div class="date">--</div>
     </div>
     <div class="clock" id="Melbourne">
       <div class="location">Melbourne</div>
       <div class="time">--:--:--</div>
+      <div class="date">--</div>
     </div>
   </div>
 
@@ -73,22 +84,33 @@
     const timezones = {
       "London": "Europe/London",
       "New_York": "America/New_York",
-      "San_Francisco": "America/Vancouver",
-      "Kochi": "Asia/Calcutta",
+      "San_Francisco": "America/Los_Angeles",
+      "Kochi": "Asia/Kolkata",
       "Dubai": "Asia/Dubai",
       "Melbourne": "Australia/Melbourne"
     };
 
     function updateClocks() {
       for (let city in timezones) {
-        const now = new Date().toLocaleTimeString("en-GB", {
+        const now = new Date();
+        const time = now.toLocaleTimeString("en-US", {
           timeZone: timezones[city],
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
           hour12: true
         });
-        document.querySelector(`#${city} .time`).textContent = now;
+
+        const date = now.toLocaleDateString("en-US", {
+          timeZone: timezones[city],
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+
+        document.querySelector(`#${city} .time`).textContent = time;
+        document.querySelector(`#${city} .date`).textContent = date;
       }
     }
 
