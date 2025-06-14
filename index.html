@@ -7,65 +7,80 @@
   <style>
     body {
       font-family: sans-serif;
-      text-align: center;
-      background-color: #0e0e0e;
-      color: white;
-    }
-
-    .clock-container {
+      background-color: #111;
+      color: #eee;
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-      margin-top: 2rem;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
     }
-
+    h1 {
+      margin-bottom: 20px;
+    }
+    .clock-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
     .clock {
-      background: #1e1e1e;
-      padding: 1rem 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-      min-width: 200px;
+      background: #222;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 0 10px #000;
     }
-
-    .clock span {
-      display: block;
-      font-size: 1.5rem;
-      margin-top: 0.5rem;
+    .location {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .time {
+      font-size: 1.5em;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <h1>Multi-Timezone Clock</h1>
   <div class="clock-container">
-    <div class="clock" id="london"></div>
-    <div class="clock" id="newyork"></div>
-    <div class="clock" id="calcutta"></div>
-    <div class="clock" id="dubai"></div>
+    <div class="clock" id="London">
+      <div class="location">London</div>
+      <div class="time">--:--:--</div>
+    </div>
+    <div class="clock" id="New_York">
+      <div class="location">New York</div>
+      <div class="time">--:--:--</div>
+    </div>
+    <div class="clock" id="Tokyo">
+      <div class="location">Tokyo</div>
+      <div class="time">--:--:--</div>
+    </div>
+    <div class="clock" id="Dubai">
+      <div class="location">Dubai</div>
+      <div class="time">--:--:--</div>
+    </div>
   </div>
 
   <script>
-    const clocks = {
-      london: "Europe/London",
-      newyork: "America/New_York",
-      Calcutta: "Asia/Calcutta",
-      dubai: "Asia/Dubai"
+    const timezones = {
+      "London": "Europe/London",
+      "New_York": "America/New_York",
+      "Tokyo": "Asia/Tokyo",
+      "Dubai": "Asia/Dubai"
     };
 
     function updateClocks() {
-      Object.keys(clocks).forEach(id => {
-        const now = new Date().toLocaleString("en-GB", {
-          timeZone: clocks[id],
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit"
+      for (let city in timezones) {
+        const now = new Date().toLocaleTimeString("en-GB", {
+          timeZone: timezones[city],
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
         });
-
-        document.getElementById(id).innerHTML = \`
-          <strong>\${id.charAt(0).toUpperCase() + id.slice(1)}</strong>
-          <span>\${now}</span>
-        \`;
-      });
+        document.querySelector(`#${city} .time`).textContent = now;
+      }
     }
 
     setInterval(updateClocks, 1000);
