@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multi-Timezone Clock</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #0e0e0e;
+      color: white;
+    }
+
+    .clock-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .clock {
+      background: #1e1e1e;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      min-width: 200px;
+    }
+
+    .clock span {
+      display: block;
+      font-size: 1.5rem;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Multi-Timezone Clock</h1>
+  <div class="clock-container">
+    <div class="clock" id="london"></div>
+    <div class="clock" id="newyork"></div>
+    <div class="clock" id="calcutta"></div>
+    <div class="clock" id="dubai"></div>
+  </div>
+
+  <script>
+    const clocks = {
+      london: "Europe/London",
+      newyork: "America/New_York",
+      Calcutta: "Asia/Calcutta",
+      dubai: "Asia/Dubai"
+    };
+
+    function updateClocks() {
+      Object.keys(clocks).forEach(id => {
+        const now = new Date().toLocaleString("en-GB", {
+          timeZone: clocks[id],
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        });
+
+        document.getElementById(id).innerHTML = \`
+          <strong>\${id.charAt(0).toUpperCase() + id.slice(1)}</strong>
+          <span>\${now}</span>
+        \`;
+      });
+    }
+
+    setInterval(updateClocks, 1000);
+    updateClocks(); // initial call
+  </script>
+</body>
+</html>
