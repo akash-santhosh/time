@@ -1,121 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #111;
-      color: #eee;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    .clock-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      width: 100%;
-      max-width: 800px;
-    }
-    .clock {
-      background: #222;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 0 10px #000;
-    }
-    .location {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-    }
-    .time {
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-    .date {
-      font-size: 1em;
-      margin-top: 5px;
-      color: #ccc;
-    }
-  </style>
-</head>
-<body>
-  
-  <div class="clock-container">
-    <div class="clock" id="London">
-      <div class="location">London</div>
-      <div class="time">--:--:--</div>
-      <div class="date">--</div>
-    </div>
-    <div class="clock" id="Dubai">
-      <div class="location">Dubai</div>
-      <div class="time">--:--:--</div>
-      <div class="date">--</div>
-    </div>
-    <div class="clock" id="New_York">
-      <div class="location">New York</div>
-      <div class="time">--:--:--</div>
-      <div class="date">--</div>
-    </div>
-    <div class="clock" id="Kochi">
-      <div class="location">Kochi</div>
-      <div class="time">--:--:--</div>
-      <div class="date">--</div>
-    </div>
-    <div class="clock" id="San_Francisco">
-      <div class="location">San Francisco</div>
-      <div class="time">--:--:--</div>
-      <div class="date">--</div>
-    </div>
-    <div class="clock" id="Melbourne">
-      <div class="location">Melbourne</div>
-      <div class="time">--:--:--</div>
-      <div class="date">--</div>
-    </div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>World Clock</title>
 
-  <script>
-    const timezones = {
-      "London": "Europe/London",
-      "New_York": "America/New_York",
-      "San_Francisco": "America/Los_Angeles",
-      "Kochi": "Asia/Kolkata",
-      "Dubai": "Asia/Dubai",
-      "Melbourne": "Australia/Melbourne"
-    };
+    <meta
+      name="description"
+      content="A responsive real-time world clock application displaying multiple timezones simultaneously. Built with vanilla JavaScript, HTML5, and CSS3."
+    />
+    <meta
+      name="keywords"
+      content="world clock, timezone, time zones, real-time clock, multiple timezones, web application, JavaScript"
+    />
 
-    function updateClocks() {
-      for (let city in timezones) {
-        const now = new Date();
-        const time = now.toLocaleTimeString("en-US", {
-          timeZone: timezones[city],
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: true
-        });
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
-        const date = now.toLocaleDateString("en-US", {
-          timeZone: timezones[city],
-          weekday: 'short',
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
-        });
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-        document.querySelector(`#${city} .time`).textContent = time;
-        document.querySelector(`#${city} .date`).textContent = date;
-      }
-    }
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
 
-    setInterval(updateClocks, 1000);
-    updateClocks(); // initial call
-  </script>
-</body>
+    <link rel="stylesheet" href="src/css/main.css" />
+  </head>
+  <body class="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+    <div
+      class="container mx-auto px-4 py-6 h-screen flex flex-col overflow-hidden"
+    >
+      <div
+        class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-fr"
+        id="clocks-container"
+      >
+      </div>
+    </div>
+
+    <script src="config/settings.js"></script>
+    <script src="cities.js"></script>
+
+    <script src="src/js/TimeZoneUtils.js"></script>
+    <script src="src/js/WorldClock.js"></script>
+    <script src="src/js/GridManager.js"></script>
+    <script src="src/js/EventManager.js"></script>
+    <script src="src/js/WorldClocksApp.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        console.log("World Clocks App Starting...");
+
+        window.worldClocks = new WorldClocksApp();
+
+        console.log("World Clocks App Started Successfully");
+      });
+
+      window.addEventListener("beforeunload", () => {
+        if (window.worldClocks) {
+          window.worldClocks.destroy();
+        }
+      });
+    </script>
+  </body>
 </html>
